@@ -109,7 +109,7 @@ Sebelum menjalankan Script, pastikan Anda sudah mengarahkan **domain** Anda ke *
 - Minecraft: `mc.domain.com`
 - FileBrowser: `file.domain.com`
 
-### 4. Jalankan `domain-setup.sh`
+### 1. Jalankan `domain-setup.sh`
 
 ```bash
 sudo bash domain-setup.sh
@@ -122,7 +122,7 @@ Setelah itu, Script akan:
 - Mengonfigurasi Nginx untuk reverse proxy ke Minecraft (port 25565) dan FileBrowser (port 8080).
 - Memasang SSL untuk kedua domain menggunakan Certbot.
 
-### Verifikasi Akses
+### 2. Verifikasi Akses
 Setelah proses selesai, Anda dapat mengakses:
 - Minecraft server di: https://mc.domain.com:25565
 - FileBrowser UI di: https://file.domain.com
