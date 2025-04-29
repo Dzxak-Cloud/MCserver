@@ -10,7 +10,10 @@ Skrip ini membantu kamu:
 ---
 
 ## 📁 Struktur File
-
+.
+├── install.sh # Setup server Minecraft + FileBrowser
+├── backup.sh # Backup dunia Minecraft + upload ke MEGA
+└── README.md
 ```
 
 ## 🚀 Cara Instalasi Server Minecraft
