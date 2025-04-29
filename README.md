@@ -1,5 +1,3 @@
-Berikut adalah **README.md** yang menjelaskan cara penggunaan `install.sh` untuk setup server Minecraft (Forge atau Paper), dan `backup.sh` untuk backup otomatis ke MEGA:
-
 ---
 
 ```markdown
