@@ -141,9 +141,8 @@ SSL telah diterapkan dengan sukses, sehingga koneksi akan aman dengan protokol H
 ---
 
 ## 🔐 Keamanan
-Pastikan hanya port yang diperlukan (25565 untuk Minecraft dan 8080 untuk FileBrowser) yang terbuka di firewall.
-
-Gunakan password yang kuat untuk login di FileBrowser.
+- Pastikan hanya port yang diperlukan (25565 untuk Minecraft dan 8080 untuk FileBrowser) yang terbuka di firewall.
+- Gunakan password yang kuat untuk login di FileBrowser.
 
 ---
 
