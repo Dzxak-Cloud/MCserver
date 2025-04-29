@@ -14,6 +14,16 @@ Skrip ini membantu kamu:
 ├── install.sh # Setup server Minecraft + FileBrowser
 ├── backup.sh # Backup dunia Minecraft + upload ke MEGA
 └── README.md
+
+ ---
+
+## 📦 Prasyarat
+
+Sebelum memulai, pastikan Anda memiliki hal-hal berikut:
+- Server Ubuntu (disarankan menggunakan VPS atau dedicated server).
+- **Domain** yang sudah diatur dengan **A record** yang mengarah ke IP server Anda.
+- **Nginx** dan **Certbot** harus diinstal di server Anda.
+
 ```
 
 ## 🚀 Cara Instalasi Server Minecraft
@@ -68,6 +78,34 @@ mega-login email@example.com yourpassword
 ```bash
 bash backup.sh
 ```
+
+## 🚀 Domain + SSL 
+
+Sebelum menjalankan skrip, pastikan Anda sudah mengarahkan **domain** Anda ke **IP server** dengan menambahkan **A record** di pengaturan DNS. Anda akan membutuhkan dua domain, satu untuk Minecraft dan satu untuk FileBrowser:
+- Minecraft: `mc.domain.com`
+- FileBrowser: `file.domain.com`
+
+### 4. Jalankan `domain-setup.sh`
+
+```bash
+sudo bash domain-setup.sh
+```
+Script akan meminta Anda untuk memasukkan domain untuk Minecraft dan FileBrowser:
+- Masukkan domain untuk Minecraft (contoh: mc.domain.com):
+- Masukkan domain untuk FileBrowser (contoh: file.domain.com):
+
+Setelah itu, Script akan:
+- Mengonfigurasi Nginx untuk reverse proxy ke Minecraft (port 25565) dan FileBrowser (port 8080).
+- Memasang SSL untuk kedua domain menggunakan Certbot.
+
+### Verifikasi Akses
+Setelah proses selesai, Anda dapat mengakses:
+- Minecraft server di: https://mc.domain.com:25565
+- FileBrowser UI di: https://file.domain.com
+
+SSL telah diterapkan dengan sukses, sehingga koneksi akan aman dengan protokol HTTPS.
+
+---
 
 ### Yang dilakukan:
 - Membuat ZIP berisi dunia Minecraft, konfigurasi, plugin, dll
