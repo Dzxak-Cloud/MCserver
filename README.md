@@ -14,9 +14,7 @@ Skrip ini membantu kamu:
 ```
 .
 ├── install.sh       # Setup server Minecraft + FileBrowser
-
-├── backup.sh        # Backup dunia Minecraft + upload ke MEGA
-
+├── backup.sh        # Backup dunia Minecraft + upload ke MEG
 └── README.md
 ```
 
