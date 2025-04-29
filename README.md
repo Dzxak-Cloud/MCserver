@@ -1,5 +1,3 @@
----
-
 ```markdown
 # 🧱 Minecraft Server Installer + Auto Backup (Forge / Paper)
 
