@@ -1,7 +1,7 @@
 ```markdown
-# 🧱 Minecraft Server Installer + Auto Backup (Forge / Paper)
+# 🧱 Minecraft Server Installer + Auto Backup (Forge / Paper) + Domain SSL
 
-Skrip ini membantu kamu:
+Script ini membantu kamu:
 - Install server Minecraft (Forge atau Paper)
 - Jalankan otomatis via `tmux`
 - Akses file lewat FileBrowser Web UI
@@ -13,6 +13,7 @@ Skrip ini membantu kamu:
 .
 ├── install.sh # Setup server Minecraft + FileBrowser
 ├── backup.sh # Backup dunia Minecraft + upload ke MEGA
+├── domain-setup.sh # Ubah IP jadi Domain dan SSL
 └── README.md
 
  ---
