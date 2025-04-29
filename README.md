@@ -79,9 +79,33 @@ mega-login email@example.com yourpassword
 bash backup.sh
 ```
 
+### Yang dilakukan:
+- Membuat ZIP berisi dunia Minecraft, konfigurasi, plugin, dll
+- Upload ke MEGA folder `/backups`
+- Hapus backup lokal lebih dari 2 hari
+- Hapus backup MEGA lebih dari 7 file terbaru
+
+---
+
+## ⏰ Menjadwalkan Backup Otomatis
+
+### Edit crontab:
+```bash
+crontab -e
+```
+
+### Tambahkan baris:
+```
+0 0 * * * /minecraft/backup.sh >> /minecraft/backups/backup.log 2>&1
+```
+
+Backup akan otomatis dijalankan **setiap hari pukul 00:00**.
+
+---
+
 ## 🚀 Domain + SSL 
 
-Sebelum menjalankan skrip, pastikan Anda sudah mengarahkan **domain** Anda ke **IP server** dengan menambahkan **A record** di pengaturan DNS. Anda akan membutuhkan dua domain, satu untuk Minecraft dan satu untuk FileBrowser:
+Sebelum menjalankan Script, pastikan Anda sudah mengarahkan **domain** Anda ke **IP server** dengan menambahkan **A record** di pengaturan DNS. Anda akan membutuhkan dua domain, satu untuk Minecraft dan satu untuk FileBrowser:
 - Minecraft: `mc.domain.com`
 - FileBrowser: `file.domain.com`
 
@@ -107,29 +131,6 @@ SSL telah diterapkan dengan sukses, sehingga koneksi akan aman dengan protokol H
 
 ---
 
-### Yang dilakukan:
-- Membuat ZIP berisi dunia Minecraft, konfigurasi, plugin, dll
-- Upload ke MEGA folder `/backups`
-- Hapus backup lokal lebih dari 2 hari
-- Hapus backup MEGA lebih dari 7 file terbaru
-
----
-
-## ⏰ Menjadwalkan Backup Otomatis
-
-### Edit crontab:
-```bash
-crontab -e
-```
-
-### Tambahkan baris:
-```
-0 0 * * * /minecraft/backup.sh >> /minecraft/backups/backup.log 2>&1
-```
-
-Backup akan otomatis dijalankan **setiap hari pukul 00:00**.
-
----
 
 ## 📌 Tips Tambahan
 
