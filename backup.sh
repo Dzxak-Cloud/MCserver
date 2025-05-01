@@ -1,35 +1,43 @@
 #!/bin/bash
 
-# Set timezone (opsional, bisa disesuaikan)
-export TZ="Asia/Jakarta"
-
-# Format waktu
-TIMESTAMP=$(date +"%d-%m-%Y_%H-%M")
-
-# Paths
+# === CONFIG ===
 SOURCE_DIR="/minecraft"
-ZIP_NAME="minecraft-$TIMESTAMP.zip"
-ZIP_PATH="/path/to/backups/$ZIP_NAME"  # Ganti dengan path lokal untuk menyimpan zip sementara
-MEGA_BACKUP_FOLDER="/backups"
+LOCAL_BACKUP_DIR="/backups"
+MEGA_DIR="/backups"
 
-# Zip folder
+# Buat folder lokal kalau belum ada
+mkdir -p "$LOCAL_BACKUP_DIR"
+
+# === TIME FORMAT ===
+TIMESTAMP=$(date +"%d-%m-%Y_%H-%M")
+ZIP_NAME="minecraft-$TIMESTAMP.zip"
+ZIP_PATH="$LOCAL_BACKUP_DIR/$ZIP_NAME"
+
+# === ZIP FOLDER ===
+echo "[$(date)] Zipping $SOURCE_DIR to $ZIP_PATH..."
 zip -r "$ZIP_PATH" "$SOURCE_DIR"
 
-# Upload to MEGA
-mega-put "$ZIP_PATH" "$MEGA_BACKUP_FOLDER"
+# === UPLOAD TO MEGA ===
+echo "[$(date)] Uploading to MEGA: $ZIP_NAME..."
+mega-put "$ZIP_PATH" "$MEGA_DIR"
 
-# Hapus file lokal yang lebih dari 1 hari
-find /path/to/backups -name "minecraft-*.zip" -type f -mmin +1440 -exec rm {} \;
+# === DELETE LOCAL FILES OLDER THAN 24 HOURS ===
+echo "[$(date)] Cleaning up local files older than 24h..."
+find "$LOCAL_BACKUP_DIR" -name "minecraft-*.zip" -type f -mmin +1440 -exec rm -f {} \;
 
-# Hapus file di MEGA yang lebih dari 72 jam
-mega-find "$MEGA_BACKUP_FOLDER" | while read -r file; do
-    file_time=$(mega-ls -e "$file" | grep -oP '\d{4}-\d{2}-\d{2} \d{2}:\d{2}')
-    if [ -n "$file_time" ]; then
-        file_epoch=$(date -d "$file_time" +%s)
-        now_epoch=$(date +%s)
-        diff=$(( (now_epoch - file_epoch) / 3600 ))
-        if [ "$diff" -gt 72 ]; then
-            mega-rm "$file"
+# === DELETE MEGA FILES OLDER THAN 72 HOURS ===
+echo "[$(date)] Cleaning up MEGA files older than 72h..."
+mega-find "$MEGA_DIR" | while read -r FILE; do
+    CREATED_TIME=$(mega-ls -l "$FILE" 2>/dev/null | awk '{print $(NF-1), $NF}')
+    if [[ "$CREATED_TIME" != "" ]]; then
+        FILE_EPOCH=$(date -d "$CREATED_TIME" +%s 2>/dev/null)
+        NOW_EPOCH=$(date +%s)
+        if [[ "$FILE_EPOCH" != "" && "$FILE_EPOCH" =~ ^[0-9]+$ ]]; then
+            AGE_HOURS=$(( (NOW_EPOCH - FILE_EPOCH) / 3600 ))
+            if [ "$AGE_HOURS" -gt 72 ]; then
+                echo "Deleting $FILE from MEGA (age: $AGE_HOURS hours)..."
+                mega-rm "$FILE"
+            fi
         fi
     fi
 done
