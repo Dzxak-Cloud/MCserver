@@ -1,37 +1,35 @@
 #!/bin/bash
 
-MC_DIR="/minecraft"
-BACKUP_DIR="$MC_DIR/backups"
+# Set timezone (opsional, bisa disesuaikan)
+export TZ="Asia/Jakarta"
+
+# Format waktu
 TIMESTAMP=$(date +"%d-%m-%Y_%H-%M")
-ZIP_NAME="minecraft-backup-$TIMESTAMP.zip"
-ZIP_PATH="$BACKUP_DIR/$ZIP_NAME"
 
-# === CEK MEGA-CMD TERINSTAL DAN LOGIN ===
-command -v mega-put >/dev/null 2>&1 || { echo "mega-cmd tidak ditemukan. Install dulu ya!"; exit 1; }
-mega-login -c >/dev/null 2>&1 || { echo "Belum login ke MEGA. Jalankan 'mega-login' dulu."; exit 1; }
+# Paths
+SOURCE_DIR="/minecraft"
+ZIP_NAME="minecraft-$TIMESTAMP.zip"
+ZIP_PATH="/path/to/backups/$ZIP_NAME"  # Ganti dengan path lokal untuk menyimpan zip sementara
+MEGA_BACKUP_FOLDER="/backups"
 
-# === PERSIAPAN FOLDER BACKUP ===
-mkdir -p "$BACKUP_DIR"
-cd "$MC_DIR" || exit
+# Zip folder
+zip -r "$ZIP_PATH" "$SOURCE_DIR"
 
-# === ZIP FILE ===
-ZIP_TARGETS="server.properties eula.txt *.jar start.sh"
-[ -d world ] && ZIP_TARGETS="$ZIP_TARGETS world/"
-[ -d plugins ] && ZIP_TARGETS="$ZIP_TARGETS plugins/"
+# Upload to MEGA
+mega-put "$ZIP_PATH" "$MEGA_BACKUP_FOLDER"
 
-zip -r "$ZIP_PATH" $ZIP_TARGETS
+# Hapus file lokal yang lebih dari 1 hari
+find /path/to/backups -name "minecraft-*.zip" -type f -mmin +1440 -exec rm {} \;
 
-# === UPLOAD KE MEGA ===
-if mega-put "$ZIP_PATH" /backups/; then
-  echo "✅ Backup berhasil diupload ke MEGA"
-else
-  echo "❌ Upload ke MEGA gagal"
-fi
-
-# === HAPUS BACKUP LOKAL LEBIH DARI 2 HARI ===
-find "$BACKUP_DIR" -type f -mtime +2 -name '*.zip' -delete
-
-# === HAPUS FILE DI MEGA KECUALI 7 TERBARU ===
-mega-ls -c /backups | tail -n +8 | while read -r file; do
-  mega-rm "/backups/$file"
+# Hapus file di MEGA yang lebih dari 72 jam
+mega-find "$MEGA_BACKUP_FOLDER" | while read -r file; do
+    file_time=$(mega-ls -e "$file" | grep -oP '\d{4}-\d{2}-\d{2} \d{2}:\d{2}')
+    if [ -n "$file_time" ]; then
+        file_epoch=$(date -d "$file_time" +%s)
+        now_epoch=$(date +%s)
+        diff=$(( (now_epoch - file_epoch) / 3600 ))
+        if [ "$diff" -gt 72 ]; then
+            mega-rm "$file"
+        fi
+    fi
 done
