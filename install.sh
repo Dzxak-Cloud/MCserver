@@ -72,25 +72,6 @@ java -Xms$RAM_MIN -Xmx$RAM_MAX -jar $SERVER_JAR nogui
 EOF
 chmod +x start.sh
 
-# 6. Jalankan server Minecraft di tmux
-echo "Menjalankan server Minecraft di background (tmux: minecraft)..."
-tmux has-session -t minecraft 2>/dev/null && tmux kill-session -t minecraft
-tmux new-session -d -s minecraft "/minecraft/start.sh"
-
-# 7. Install FileBrowser
-echo "Menginstall FileBrowser..."
-curl -fsSL https://filebrowser.org/install.sh | bash
-
-mkdir -p /etc/filebrowser
-filebrowser config init -d /etc/filebrowser/filebrowser.db
-filebrowser config set --database /etc/filebrowser/filebrowser.db --root /minecraft
-filebrowser users add admin admin --perm.admin
-
-# 8. Jalankan FileBrowser di tmux
-echo "Menjalankan FileBrowser di background (tmux: filebrowser)..."
-tmux has-session -t filebrowser 2>/dev/null && tmux kill-session -t filebrowser
-tmux new-session -d -s filebrowser "filebrowser -d /etc/filebrowser/filebrowser.db"
-
 # Done!
 echo ""
 echo "✅ Instalasi selesai!"
