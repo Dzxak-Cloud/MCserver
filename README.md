@@ -64,9 +64,10 @@ sudo bash install.sh
 ## ☁️ Auto Backup ke MEGA
 
 ### 1. Install `mega-cmd`
-Untuk Ubuntu/Debian:
+ - [MegaCMD](https://mega.io/id/cmd#download)
+Untuk Ubuntu 20.04:
 ```bash
-sudo apt install megacmd
+wget https://mega.nz/linux/repo/xUbuntu_20.04/amd64/megacmd-xUbuntu_20.04_amd64.deb && sudo apt install "$PWD/megacmd-xUbuntu_20.04_amd64.deb"
 ```
 
 ### 2. Login ke MEGA
@@ -74,19 +75,16 @@ sudo apt install megacmd
 mega-login email@example.com yourpassword
 ```
 
-### 3. Jalankan `backup.sh`
+### 3. CHMOD `backup.sh`
+```bash
+chmod 777 backup.sh
+```
+
+### 4. Jalankan `backup.sh`
 
 ```bash
 bash backup.sh
 ```
-
-### Yang dilakukan:
-- Membuat ZIP berisi dunia Minecraft, konfigurasi, plugin, dll
-- Upload ke MEGA folder `/backups`
-- Hapus backup lokal lebih dari 2 hari
-- Hapus backup MEGA lebih dari 7 file terbaru
-
----
 
 ## ⏰ Menjadwalkan Backup Otomatis
 
@@ -101,6 +99,12 @@ crontab -e
 ```
 
 Backup akan otomatis dijalankan **setiap hari pukul 00:00**.
+
+### Yang dilakukan:
+- Membuat ZIP berisi dunia Minecraft, konfigurasi, plugin, dll
+- Upload ke MEGA folder `/backups`
+- Hapus backup lokal lebih dari 1 hari
+- Hapus backup MEGA lebih dari 3 hari
 
 ---
 
